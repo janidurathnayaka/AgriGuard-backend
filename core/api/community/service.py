@@ -1,4 +1,4 @@
-from .respository import CreatePostRepository
+from .respository import CreatePostRepository,GetAllPostRepository
 from .utils import CloudinaryService
 import uuid
 
@@ -14,3 +14,11 @@ async def CreateNewPostService(post,db,file):
         )
     post["img"] = upload_result["url"]
     return CreatePostRepository(post,db)
+
+
+#Get all posts
+def GetAllPostsService(db):
+    response = GetAllPostRepository(db)
+    if response is None:
+        return None
+    return response

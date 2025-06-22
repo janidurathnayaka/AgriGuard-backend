@@ -1,14 +1,12 @@
 from fastapi import APIRouter,status,File,UploadFile,Form
 from database.db import db_dependencie 
-from .schemas import PostCreateSchema,PostCreateResponse
-from .service import CreateNewPostService
+from .schemas import PostCreateSchema,PostCreateResponse,GetAllPostsResponseModel
+from .service import CreateNewPostService,GetAllPostsService
 
 
 router = APIRouter()
 
-@router.get("/")
-def root():
-    return "Hello"
+
 
 #Create new post
 @router.post("/create-post",status_code=status.HTTP_201_CREATED,description="Create new post",response_model=PostCreateResponse)
@@ -29,5 +27,11 @@ async def postCreate(
 
 
 #Get all posts
-# @router.get("/",status_code=status.HTTP_200_OK,description="Get all posts")
+@router.get("/",status_code=status.HTTP_200_OK,description="Get all posts",response_model=GetAllPostsResponseModel)
+def getAllPosts(db:db_dependencie):
+    res = GetAllPostsService(db)
+    return GetAllPostsResponseModel(
+        message="Posts retrived succuss!",
+        posts=res
+    )
     

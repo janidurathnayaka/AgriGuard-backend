@@ -16,3 +16,10 @@ def CreatePostRepository(post,db):
         return post_data.data[0]["id"]
     return None
         
+
+def GetAllPostRepository(db):
+    """for get all the posts from database"""
+    response = db.table("posts").select("*").execute()
+    if response.data:
+        return response.data
+    return None

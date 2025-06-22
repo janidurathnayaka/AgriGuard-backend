@@ -1,6 +1,7 @@
 from pydantic import BaseModel,Field,field_validator
-from typing import Optional
+from typing import Optional,List
 from .exceptions import PostCreateValidationsException
+
 
 class PostCreateSchema(BaseModel):
     post_owner:str=Field(...)
@@ -42,3 +43,7 @@ class PostCreateResponse(BaseModel):
     status:Optional[bool] = True
     message:str
     
+class GetAllPostsResponseModel(BaseModel):
+    status:Optional[bool] = True
+    message:str
+    posts:List
