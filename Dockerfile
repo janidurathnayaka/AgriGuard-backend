@@ -1,7 +1,26 @@
-FROM python:3.14.0b3-alpine3.21
-WORKDIR /app/
-COPY . /app/
-RUN pip install -r requiremnts.txt
-EXPOSE 8000
+FROM python:3.11-slim
 
-CMD [ "fastapi","run" ]
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first (for better caching)
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Run the application
+CMD ["python", "main.py"]
