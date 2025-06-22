@@ -1,4 +1,4 @@
-from .respository import CreatePostRepository,GetAllPostRepository
+from .respository import CreatePostRepository,GetAllPostRepository,DeletePostRepository,UpdatePostRepository
 from .utils import CloudinaryService
 import uuid
 
@@ -19,6 +19,23 @@ async def CreateNewPostService(post,db,file):
 #Get all posts
 def GetAllPostsService(db):
     response = GetAllPostRepository(db)
+    if response is None:
+        return None
+    return response
+
+#delete post\
+def DeletePostService(post_id,db):
+    response = DeletePostRepository(post_id,db)
+    if response is None:
+        return None
+    return response
+
+
+
+def UpdatePostService(post_id,db,updated_post):
+    """Update post in database"""
+    # Check if post exists
+    response = UpdatePostRepository(post_id, db,updated_post)
     if response is None:
         return None
     return response

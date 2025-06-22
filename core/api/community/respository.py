@@ -23,3 +23,19 @@ def GetAllPostRepository(db):
     if response.data:
         return response.data
     return None
+
+def DeletePostRepository(post_id,db):
+    """Delete post from database"""
+    response = db.table("posts").delete().eq("id",post_id).execute()
+    if response.data:
+        return response.data[0]["id"]
+    return None
+
+
+def UpdatePostRepository(post_id, db, updated_post):
+    """Update post in database"""
+    # Check if post exists
+    response = db.table("posts").update(updated_post).eq("id", post_id).execute()
+    if len(response.data) > 0:
+        return response.data[0]
+    return None

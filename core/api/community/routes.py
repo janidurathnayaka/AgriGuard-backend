@@ -1,7 +1,7 @@
 from fastapi import APIRouter,status,File,UploadFile,Form
 from database.db import db_dependencie 
-from .schemas import PostCreateSchema,PostCreateResponse,GetAllPostsResponseModel
-from .service import CreateNewPostService,GetAllPostsService
+from .schemas import PostCreateSchema,PostCreateResponse,GetAllPostsResponseModel,UpdatePostSchema
+from .service import CreateNewPostService,GetAllPostsService,DeletePostService,UpdatePostService
 
 
 router = APIRouter()
@@ -35,3 +35,19 @@ def getAllPosts(db:db_dependencie):
         posts=res
     )
     
+
+@router.delete("/{post_id}",status_code=status.HTTP_200_OK)
+def deletePost(post_id:str,db:db_dependencie):
+    res = DeletePostService(post_id,db)
+    if res is None:
+        return {"message":"Post not found"}
+    return {"message":"Post deleted succussfully!"}
+
+
+@router.put("/{post_id}",status_code=status.HTTP_200_OK)
+def updatePost(post_id:str,db:db_dependencie,updated_post:UpdatePostSchema):
+
+    res  = UpdatePostService(post_id,db,updated_post.model_dump())
+    if res is None:
+        return {"message":"Post not found"}
+    return {"message":"Post updated succussfully!"}

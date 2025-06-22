@@ -47,3 +47,27 @@ class GetAllPostsResponseModel(BaseModel):
     status:Optional[bool] = True
     message:str
     posts:List
+
+
+class UpdatePostSchema(BaseModel):
+    title:Optional[str] = Field(...)
+    content:Optional[str] = Field(...)
+
+    @field_validator("title",mode="after")
+    def owner(cls,value):
+        if value is not None and len(value) == 0:
+            raise PostCreateValidationsException(
+                status_code=401,
+                detail="Validation error",
+                solution="title field required!!!"
+            )
+        return value
+    @field_validator("content",mode="after")
+    def owner(cls,value):
+        if value is not None and len(value) == 0:
+            raise PostCreateValidationsException(
+                status_code=401,
+                detail="Validation error",
+                solution="content field required!!!"
+            )
+        return value
